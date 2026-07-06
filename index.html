@@ -12,7 +12,7 @@ li { margin: 8px 0; }
 <body>
 <h1>VoiceOver and Safari's date/time inputs</h1>
 
-<p>I am a blind VoiceOver user. On iOS Safari, when the VoiceOver cursor lands on a date or time input, the native picker opens by itself before I double-tap anything. So just swiping through a form keeps opening pickers I never asked for, and I lose my place every time.</p>
+<p>I am a blind VoiceOver user. On iOS Safari I keep running into two problems with date and time inputs. First, when the VoiceOver cursor lands on one, the native picker opens by itself before I double-tap anything, so just swiping through a form keeps opening pickers I never asked for and I lose my place. Second, in some layouts the opposite happens: I double-tap the input and nothing opens at all.</p>
 
 <p>I put each test on its own page so it stays easy to navigate:</p>
 
@@ -20,8 +20,9 @@ li { margin: 8px 0; }
 <li><a href="case1.html">Case 1. Date and time inputs, nothing else</a></li>
 <li><a href="case2.html">Case 2. Same inputs inside a container that has a click listener</a></li>
 <li><a href="case3.html">Case 3. A plain text input, for comparison</a></li>
+<li><a href="case4.html">Case 4. Inputs inside a modal dialog, where double-tap can fail</a></li>
 </ul>
 
-<p>To reproduce: turn VoiceOver on, open a case page, and swipe right through the page without double-tapping. On my devices the picker activates as soon as the cursor reaches the input, in both case 1 and case 2. The text input in case 3 behaves normally.</p>
+<p>To reproduce: turn VoiceOver on, open a case page, and swipe right through the page without double-tapping. On my devices the picker activates as soon as the cursor reaches the input in cases 1 and 2. In case 4, which copies the modal layout of a booking tool I use at work, double-tapping the input has failed to open the picker as well. The text input in case 3 behaves normally.</p>
 </body>
 </html>
