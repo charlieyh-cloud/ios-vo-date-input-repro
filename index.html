@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VoiceOver and Safari date/time inputs</title>
+<title>VoiceOver opens date/time pickers from cursor focus alone</title>
 <style>
 body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 16px; line-height: 1.6; }
-li { margin: 8px 0; }
+label { display: block; font-weight: 600; margin: 16px 0 4px; }
+input { font-size: 16px; padding: 8px; }
 </style>
 </head>
 <body>
-<h1>VoiceOver and Safari's date/time inputs</h1>
+<h1>VoiceOver opens date/time pickers from cursor focus alone</h1>
 
-<p>I am a blind VoiceOver user. On iOS Safari I keep running into two problems with date and time inputs. First, when the VoiceOver cursor lands on one, the native picker opens by itself before I double-tap anything, so just swiping through a form keeps opening pickers I never asked for and I lose my place. Second, in some layouts the opposite happens: I double-tap the input and nothing opens at all.</p>
+<p>I am a blind VoiceOver user. On iOS Safari, when the VoiceOver cursor lands on a date or time input, the native picker activates on its own, before I double-tap anything. So just swiping through a form keeps opening pickers I never asked for, and I lose my place every time. Moving the cursor onto a field should only announce it; nothing should open until I double-tap, the way text inputs behave.</p>
 
-<p>Each problem has its own test page:</p>
+<p>To reproduce: turn VoiceOver on and swipe right through this page without double-tapping. The two inputs below are standard HTML with no scripts around them.</p>
 
-<ul>
-<li><a href="case1.html">Case 1. Plain date and time inputs. The picker opens just from cursor focus</a></li>
-<li><a href="case2.html">Case 2. The same inputs inside a modal dialog, where double-tap can fail</a></li>
-</ul>
+<label for="d">Date</label>
+<input type="date" id="d">
 
-<p>To reproduce: turn VoiceOver on, open a case page, and follow the short note at the top of each one.</p>
+<label for="t">Time</label>
+<input type="time" id="t">
 </body>
 </html>
