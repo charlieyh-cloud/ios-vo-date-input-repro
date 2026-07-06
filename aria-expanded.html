@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VoiceOver and expand/collapse state announcements</title>
+<style>
+body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 16px; line-height: 1.6; }
+button { font-size: 16px; padding: 10px 16px; margin: 8px 0; display: block; }
+.panel { border: 1px solid #ccc; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; }
+[hidden] { display: none; }
+h2 { font-size: 1.05em; margin-top: 28px; }
+</style>
+</head>
+<body>
+<h1>VoiceOver and expand/collapse state announcements</h1>
+
+<p>Checking how VoiceOver on iOS Safari reads the state change when I double-tap an expand/collapse button. What I expect after double-tapping: the new state ("expanded" or "collapsed") is spoken completely. What I have been getting: the announcement starts and then gets cut off, or the state is not spoken at all.</p>
+
+<h2>Test 1. State change only, nothing else happens</h2>
+<p>This button only flips its aria-expanded value. No content appears or disappears.</p>
+<button id="b1" aria-expanded="false">Details</button>
+
+<h2>Test 2. Typical accordion, content shows at the same time</h2>
+<p>This one flips the state and shows or hides the panel below it in the same moment, the way most accordions are built.</p>
+<button id="b2" aria-expanded="false" aria-controls="p2">More options</button>
+<div class="panel" id="p2" hidden>Some options would be here.</div>
+
+<h2>Test 3. Native details and summary</h2>
+<details>
+<summary>Shipping information</summary>
+<p>The content of the section.</p>
+</details>
+
+<script>
+function flip(btn) {
+  btn.setAttribute('aria-expanded', btn.getAttribute('aria-expanded') === 'false' ? 'true' : 'false');
+}
+document.getElementById('b1').addEventListener('click', function () { flip(this); });
+document.getElementById('b2').addEventListener('click', function () {
+  flip(this);
+  document.getElementById('p2').hidden = this.getAttribute('aria-expanded') === 'false';
+});
+</script>
+</body>
+</html>
