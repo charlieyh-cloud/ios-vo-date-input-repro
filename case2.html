@@ -5,47 +5,72 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Case 2. Inputs inside a modal dialog</title>
 <style>
-body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 16px; line-height: 1.6; }
+body { font-family: -apple-system, sans-serif; margin: 0; line-height: 1.6; }
+main { max-width: 600px; margin: 0 auto; padding: 16px; }
 label { display: block; font-weight: 600; margin: 16px 0 4px; }
-input { font-size: 16px; padding: 8px; }
+input { font-size: 16px; padding: 8px; width: 100%; box-sizing: border-box; }
 button { font-size: 16px; padding: 10px 16px; }
-#overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.45); display: none; }
+#overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.45); display: none; z-index: 2147483001; }
 #overlay.open { display: block; }
-#dialog { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-radius: 16px 16px 0 0; padding: 16px; }
+#sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 92vh; background: #f4f6fb; border-radius: 16px 16px 0 0; display: flex; flex-direction: column; }
+#sheet header { padding: 14px 16px; border-bottom: 1px solid #dfe3ea; }
+#sheetbody { overflow: auto; padding: 14px 16px 40px; }
+.card { background: #fff; border: 1px solid #dfe3ea; border-radius: 12px; padding: 14px; }
 </style>
 </head>
 <body>
+<main id="page">
 <h1>Case 2. Inputs inside a modal dialog</h1>
 
-<p>This is the layout where I first hit the problem, in a booking tool I use at work. The date and time inputs sit inside a bottom-sheet dialog, and the dimmed backdrop behind it listens for clicks to close the dialog. Open the dialog, put the VoiceOver cursor on the date input and double-tap: in this layout the picker has failed to open at all, on top of the picker opening by itself when the cursor lands on it.</p>
+<p>This copies the structure of a booking tool I use at work, where I first hit the problem. When the bottom-sheet dialog opens, the page behind it is marked inert and hidden from assistive tech, the sheet body is a scrollable area, and the page has document-level event listeners the way single-page apps usually do. In that tool, double-tapping the date input often did nothing at all.</p>
 
 <p><button id="open">Open the booking dialog</button></p>
 
 <p><a href="index.html">Back to the first page</a></p>
+</main>
 
 <div id="overlay">
-  <div id="dialog" role="dialog" aria-modal="true" aria-labelledby="dt">
-    <h2 id="dt">Booking</h2>
-    <label for="d">Date</label>
-    <input type="date" id="d">
-    <label for="t">Time</label>
-    <input type="time" id="t">
-    <p><button id="close">Close</button></p>
+  <div id="sheet" role="dialog" aria-modal="true" aria-labelledby="dt">
+    <header><b id="dt" tabindex="-1">Booking</b></header>
+    <div id="sheetbody">
+      <div class="card">
+        <label for="d">Date</label>
+        <input type="date" id="d">
+        <label for="t">Time</label>
+        <input type="time" id="t">
+        <p><button id="close">Close</button></p>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
 var overlay = document.getElementById('overlay');
+var page = document.getElementById('page');
+
+// document-level listeners, the way SPAs commonly bind things
+document.addEventListener('click', function () {}, true);
+document.addEventListener('touchstart', function () {}, { passive: true, capture: true });
+document.addEventListener('focusin', function () {});
+
 document.getElementById('open').addEventListener('click', function () {
   overlay.classList.add('open');
+  page.setAttribute('inert', '');
+  page.setAttribute('aria-hidden', 'true');
   document.getElementById('dt').focus();
 });
 document.getElementById('close').addEventListener('click', function () {
   overlay.classList.remove('open');
+  page.removeAttribute('inert');
+  page.removeAttribute('aria-hidden');
   document.getElementById('open').focus();
 });
 overlay.addEventListener('click', function (e) {
-  if (e.target === overlay) { overlay.classList.remove('open'); }
+  if (e.target === overlay) {
+    overlay.classList.remove('open');
+    page.removeAttribute('inert');
+    page.removeAttribute('aria-hidden');
+  }
 });
 </script>
 </body>
