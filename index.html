@@ -3,66 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>iOS Safari + VoiceOver: native date/time input reproduction</title>
+<title>VoiceOver and Safari date/time inputs</title>
 <style>
-  body { font-family: -apple-system, sans-serif; max-width: 640px; margin: 0 auto; padding: 16px; line-height: 1.5; }
-  section { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin: 16px 0; }
-  label { display: block; font-weight: 600; margin: 12px 0 4px; }
-  input { font-size: 16px; padding: 8px; }
-  h1 { font-size: 1.3em; } h2 { font-size: 1.1em; }
-  .steps { background: #f5f5f7; border-radius: 8px; padding: 12px 16px; }
+body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 16px; line-height: 1.6; }
+li { margin: 8px 0; }
 </style>
 </head>
 <body>
-<h1>iOS Safari + VoiceOver: native date/time input issues — reproduction page</h1>
+<h1>VoiceOver and Safari's date/time inputs</h1>
 
-<p>This page contains only standard HTML <code>&lt;input type="date"&gt;</code> and <code>&lt;input type="time"&gt;</code> elements, with no JavaScript frameworks. Use it to reproduce two long-standing VoiceOver issues on iOS Safari.</p>
+<p>I am a blind VoiceOver user. On iOS Safari, when the VoiceOver cursor lands on a date or time input, the native picker opens by itself before I double-tap anything. So just swiping through a form keeps opening pickers I never asked for, and I lose my place every time.</p>
 
-<div class="steps">
-<h2>How to reproduce (VoiceOver on)</h2>
-<ol>
-<li><strong>Unwanted activation:</strong> Swipe right to move the VoiceOver cursor through the inputs below without double-tapping. Observe whether the native picker becomes active or is announced as expanded merely from cursor focus.</li>
-<li><strong>Double-tap failure:</strong> Set the VoiceOver cursor on an input in Case 2 (wrapped in an element that has a click listener) and double-tap. Observe whether the native picker opens. Compare with Case 1.</li>
-<li>If a picker opens, also observe where the VoiceOver focus lands (it often lands on an unexpected control instead of the picker or staying on the input).</li>
-</ol>
-</div>
+<p>I put each test on its own page so it stays easy to navigate:</p>
 
-<section aria-labelledby="c1">
-<h2 id="c1">Case 1 — bare inputs (no event listeners)</h2>
-<label for="d1">Date</label>
-<input type="date" id="d1">
-<label for="t1">Time</label>
-<input type="time" id="t1">
-</section>
+<ul>
+<li><a href="case1.html">Case 1. Date and time inputs, nothing else</a></li>
+<li><a href="case2.html">Case 2. Same inputs inside a container that has a click listener</a></li>
+<li><a href="case3.html">Case 3. A plain text input, for comparison</a></li>
+</ul>
 
-<section aria-labelledby="c2">
-<h2 id="c2">Case 2 — inputs inside a wrapper with a click listener</h2>
-<p>This mirrors common real-world markup (cards, form rows and framework-rendered containers often listen for clicks). On iOS Safari with VoiceOver, double-tap frequently fails to open the picker here.</p>
-<div id="wrapper">
-<label for="d2">Date</label>
-<input type="date" id="d2">
-<label for="t2">Time</label>
-<input type="time" id="t2">
-</div>
-</section>
-
-<section aria-labelledby="c3">
-<h2 id="c3">Case 3 — control: plain text input</h2>
-<p>A regular text input for comparison. Focus, double-tap and typing behave as expected with VoiceOver.</p>
-<label for="x1">Plain text</label>
-<input type="text" id="x1" autocomplete="off">
-</section>
-
-<p>Related public reports:
-<a href="https://dev.to/mfranzke/voiceover-bug-on-ios-safari-blocks-date-time-related-inputs-especially-in-react-4f61">DEV Community write-up</a>,
-<a href="https://hassellinclusion.com/blog/input-type-date-ready-for-use/">Hassell Inclusion audit</a>,
-<a href="https://a11ysupport.io/tech/html/input(type-date)_element">a11ysupport.io test results</a>.
-</p>
-
-<script>
-  // Case 2: the wrapper has a click listener — this alone is known to break
-  // VoiceOver double-tap activation of native date/time inputs on iOS Safari.
-  document.getElementById('wrapper').addEventListener('click', function () {});
-</script>
+<p>To reproduce: turn VoiceOver on, open a case page, and swipe right through the page without double-tapping. On my devices the picker activates as soon as the cursor reaches the input, in both case 1 and case 2. The text input in case 3 behaves normally.</p>
 </body>
 </html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case 2. Inputs inside a container with a click listener</title>
+<style>
+body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 16px; line-height: 1.6; }
+label { display: block; font-weight: 600; margin: 16px 0 4px; }
+input { font-size: 16px; padding: 8px; }
+</style>
+</head>
+<body>
+<h1>Case 2. Inputs inside a container with a click listener</h1>
+
+<p>The same date and time inputs, but placed inside a container that has a click event listener. Lots of real sites are built this way. Swipe through with VoiceOver on and compare with case 1.</p>
+
+<div id="wrap">
+<label for="d">Date</label>
+<input type="date" id="d">
+
+<label for="t">Time</label>
+<input type="time" id="t">
+</div>
+
+<p><a href="case3.html">Go to case 3</a></p>
+<p><a href="index.html">Back to the first page</a></p>
+
+<script>
+document.getElementById('wrap').addEventListener('click', function () {});
+</script>
+</body>
+</html>
