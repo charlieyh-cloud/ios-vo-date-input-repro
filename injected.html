@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>테스트: 전역 스크립트가 있을 때 날짜 피커 동작</title>
+<style>
+body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 16px; line-height: 1.6; }
+label { display: block; font-weight: 600; margin: 16px 0 4px; }
+input { font-size: 16px; padding: 8px; }
+.note { background: #f5f5f7; border-radius: 8px; padding: 12px 16px; }
+</style>
+</head>
+<body>
+<h1>테스트: 전역 스크립트가 있을 때 날짜 피커 동작</h1>
+
+<div class="note">
+<p><strong>이 페이지는 사파리로 직접 여세요</strong> (카카오톡 아님).</p>
+<p>인앱 브라우저가 페이지에 주입하는 것과 비슷한 문서 전역 이벤트 리스너(클릭·터치·포커스)를 미리 넣어두었습니다. 보이스오버를 켜고 아래 날짜/시간 입력을 스와이프로 지나가 보세요.</p>
+<p>초점만 닿아도 피커가 자동으로 열리면 → 스크립트가 원인 (웹킷 버그). 안 열리면 → 스크립트가 원인 아님.</p>
+</div>
+
+<label for="d">날짜</label>
+<input type="date" id="d">
+
+<label for="t">시간</label>
+<input type="time" id="t">
+
+<script>
+// 인앱 브라우저(브릿지 등)가 흔히 페이지에 주입하는 유형의 전역 리스너들.
+// 캡처 단계까지 포함해 문서 전체 상호작용을 관찰하도록 건다.
+document.addEventListener('click', function () {}, true);
+document.addEventListener('click', function () {}, false);
+document.addEventListener('touchstart', function () {}, { passive: true, capture: true });
+document.addEventListener('touchend', function () {}, { passive: true });
+document.addEventListener('focus', function () {}, true);
+document.addEventListener('focusin', function () {});
+document.addEventListener('mousedown', function () {}, true);
+document.addEventListener('pointerdown', function () {}, true);
+// 각 입력에 개별 리스너도 부착
+['d', 't'].forEach(function (id) {
+  var el = document.getElementById(id);
+  el.addEventListener('focus', function () {});
+  el.addEventListener('click', function () {});
+  el.addEventListener('touchstart', function () {}, { passive: true });
+});
+</script>
+</body>
+</html>
